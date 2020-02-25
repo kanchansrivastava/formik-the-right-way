@@ -26,65 +26,33 @@ const validateIsNumberValidation = value => {
   return value ? (typeof value === "number" ? false : true) : false;
 };
 
-const isValidationFailed = (value, validation) => {
+const isValidationFailed = (fieldValue, validation) => {
   switch (validation.name) {
     case "required":
-      return validateRequiredValidation(value);
+      return validateRequiredValidation(fieldValue);
     case "minLength":
-      return validateMinLengthValidation(value, validation.value);
+      return validateMinLengthValidation(fieldValue, validation.limit);
     case "maxLength":
-      return validateMaxLengthValidation(value, validation.value);
+      return validateMaxLengthValidation(fieldValue, validation.limit);
     case "isNumber":
-      return validateIsNumberValidation(value, validation.value);
+      return validateIsNumberValidation(fieldValue, validation.limit);
     case "minValue":
-      return validateMinValueValidation(value, validation.value);
+      return validateMinValueValidation(fieldValue, validation.limit);
     case "maxValue":
-      return validateMaxValueValidation(value, validation.value);
+      return validateMaxValueValidation(fieldValue, validation.limit);
     case "regex":
-      return validateRegexValidation(value, validation.value);
+      return validateRegexValidation(fieldValue, validation.limit);
     default:
       return false;
   }
 };
-export default isValidationFailed;
 
-// export const validation = (validations, values) => (value)  => {
-//   for (let validation of validations) {
-//     const error = validation(value, values);
-//     if (error) {
-//       return error;
-//     }
-//   }
-//   return null;
-
-// }
-
-// const getFailedValidation = (value, validations) => {
-//   const failedValidation = validations.find(validation => {
-//     return isValidationFailed(value, validation);
-//   });
-//   return failedValidation;
-// };
-
-// export const validateTextField = (
-//   value,
-//   validations,
-//   isFormSubmitted,
-//   name,
-//   isTextFieldDirty
-// ) => {
-//   let validationMessage = "";
-//   let shouldErrorMessageShown = isTextFieldDirty || isFormSubmitted;
-
-//   let failedValidation = getFailedValidation(
-//     value && value.trim && value.trim(),
-//     validations
-//   );
-
-//   if (failedValidation) {
-//     validationMessage = failedValidation.message;
-//   } else {
-//     validationMessage = "";
-//   }
-//   return { validationMessage, shouldErrorMessageShown };
-// };
+const hasValidationFailed = (fieldValue, validations) => {
+  for (let validation of validations) {
+    if (isValidationFailed(fieldValue, validation)) {
+      return validation;
+    }
+  }
+  return null;
+};
+export default hasValidationFailed;

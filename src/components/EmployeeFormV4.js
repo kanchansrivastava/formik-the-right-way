@@ -5,8 +5,6 @@ import SelectField from "./FormComponents/SelectField";
 import RadioButton from "./FormComponents/RadioButton";
 
 import { withFormik } from "formik";
-// import { isRequired, maxValue } from "./FormHandler/validator";
-
 import * as Yup from "yup";
 
 class EmployeeForm extends React.Component {
@@ -31,16 +29,26 @@ class EmployeeForm extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>Employee Form!!!</h1>
         <div>
-          <form onSubmit={this.submitForm}>
-            <TextField
-              label="Employee Name"
-              name="name"
-              validation={["isRequired", "maxValue"]}
-            />
-            <TextField label="Employee Id" name="id" disabled={true} />
+          <h1>Employee Form!!!</h1>
+          <div>
+            <form onSubmit={this.submitForm}>
+              <TextField
+                  label="Employee Name"
+                  name="name"
+                  validation={[
+                    {
+                      name: "required",
+                      errorMessage: "Employee Name is required"
+                    },
+                    {
+                      name: "maxLength",
+                      errorMessage: "Max length should be 15",
+                      limit: 15
+                    }
+                  ]}
+              />
+              {/* <TextField label="Employee Id" name="id" disabled={true} />
             <TextField label="Age" name="age" />
             <SelectField label="Department" name="department">
               <option value="">Select</option>
@@ -54,34 +62,34 @@ class EmployeeForm extends React.Component {
             <label htmlFor="gender">Male</label>
             <RadioButton name="gender" value="male" />
             <label htmlFor="gender">Female</label>
-            <RadioButton name="gender" value="female" />
-            <button type="submit">Submit</button>
-          </form>
+            <RadioButton name="gender" value="female" /> */}
+              <button type="submit">Submit</button>
+            </form>
+          </div>
         </div>
-      </div>
     );
   }
 }
 
 const validationSchema = Yup.object({
   name: Yup.string()
-    .max(15, "Must be 15 characters or less")
-    .required("This field is Required."),
+      .max(15, "Must be 15 characters or less")
+      .required("This field is Required."),
   id: Yup.number()
-    .max(20, "Must be 20 characters or less")
-    .required("This field is Required."),
+      .max(20, "Must be 20 characters or less")
+      .required("This field is Required."),
   department: Yup.string()
-    .oneOf(
-      ["IT Admin", "Software Development", "Software Testing", "UI/UX"],
-      "Invalid Job Type"
-    )
-    .required("This field is Required."),
+      .oneOf(
+          ["IT Admin", "Software Development", "Software Testing", "UI/UX"],
+          "Invalid Job Type"
+      )
+      .required("This field is Required."),
   dateOfJoining: Yup.string().required("This field is Required."),
   gender: Yup.string().required("This field is Required."),
   isContractor: Yup.bool().required("This field is Required."),
   age: Yup.number()
-    .max(20, "Must be 20 characters or less")
-    .required("This field is Required.")
+      .max(20, "Must be 20 characters or less")
+      .required("This field is Required.")
 });
 
 export const EmployeeView = withFormik({
