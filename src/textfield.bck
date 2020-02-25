@@ -1,0 +1,36 @@
+import React from "react";
+import { Input } from "antd";
+import { useField } from "formik";
+import { isValidationFailed } from "./../FormHandler/validator";
+import { render } from "react-dom";
+
+class TextField extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      field: "",
+      meta: ""
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {}
+  render() {
+    const [field, meta] = useField(this.props);
+    return (
+      <div>
+        <label htmlFor={this.props.id || this.props.name}>
+          {this.props.label}
+        </label>
+        <Input className="text-input" {...field} {...this.props} />
+        {meta.touched && meta.error ? (
+          <div className="error" style={{ color: "red" }}>
+            {meta.error}
+          </div>
+        ) : null}
+        <br />
+      </div>
+    );
+  }
+}
+
+export default TextField;
