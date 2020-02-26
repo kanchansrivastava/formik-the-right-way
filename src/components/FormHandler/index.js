@@ -17,10 +17,6 @@ function FormWrapper(WrappedComponent, validationSchema) {
       super(props);
     }
 
-    handleSubmit() {
-      return this.props.values;
-    }
-
     getFieldValues() {
       return this.props.values;
     }
@@ -29,27 +25,22 @@ function FormWrapper(WrappedComponent, validationSchema) {
       return this.props.isValid;
     }
 
-    resetForm() {
-      return this.props.resetForm();
-    }
-
-
     render() {
       return (
-          <Formik
-              initialValues={this.props.initialValues}
-              validationSchema={validationSchema}
-              enableReinitialize={true}
-              children={formikProps =>
-                <WrappedComponent
-                  resetForm={this.resetForm}
-                  isValid={this.isValid}
-                  getFieldValues={this.getFieldValues}
-                  {...formikProps}
-                  {...this.props}
-                />
-              }
-          />
+        <Formik
+          initialValues={this.props.initialValues}
+          validationSchema={validationSchema}
+          enableReinitialize={true}
+          // render={formikProps => // for older version
+          children={formikProps =>
+            <WrappedComponent
+              isValid={this.isValid}
+              getFieldValues={this.getFieldValues}
+              {...formikProps}
+              {...this.props}
+            />
+          }
+        />
       );
     }
   };
